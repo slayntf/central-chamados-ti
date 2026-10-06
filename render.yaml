@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: central-chamados-ti
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: central-chamados-db
+          property: connectionString
+      - key: TI_SECRET_KEY
+        generateValue: true
+      - key: TI_COOKIE_SECURE
+        value: "1"
+
+databases:
+  - name: central-chamados-db
+    databaseName: central_chamados
+    user: central_chamados
+    plan: free
